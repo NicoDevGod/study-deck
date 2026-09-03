@@ -46,8 +46,8 @@ function slideTitle() {
   s.addText("Dos proyectos de IA,\nde cero a producción", {
     x: 0.85, y: 2.55, w: 10.5, h: 2.0, fontFace: FONT_HEAD, fontSize: 40, bold: true, color: WHITE, isTextBox: true, margin: 0, lineSpacingMultiple: 1.05,
   });
-  s.addText("Chatbot RAG  +  Clasificador de Residuos Reciclables", {
-    x: 0.9, y: 4.55, w: 10, h: 0.5, fontFace: FONT_BODY, fontSize: 18, color: "CFEFEC", isTextBox: true, margin: 0,
+  s.addText("Chatbot RAG · Clasificador de Residuos · Agente Tool-Use", {
+    x: 0.9, y: 4.55, w: 11, h: 0.5, fontFace: FONT_BODY, fontSize: 18, color: "CFEFEC", isTextBox: true, margin: 0,
   });
   s.addText("Arquitectura · decisiones de diseño · bugs reales y cómo se resolvieron", {
     x: 0.9, y: 5.05, w: 10, h: 0.4, fontFace: FONT_BODY, fontSize: 13, italic: true, color: "9FC9C6", isTextBox: true, margin: 0,
@@ -88,16 +88,17 @@ function slideAgenda() {
   const items = [
     ["01", "Proyecto 1 — Chatbot RAG", "Arquitectura, decisiones, bugs y deploy"],
     ["02", "Proyecto 2 — Clasificador de Residuos", "Transfer learning, ONNX, bugs y deploy"],
-    ["03", "Lecciones transversales", "Qué se repite entre ambos proyectos"],
-    ["04", "Próximos pasos", "Hacia dónde sigue el portafolio de IA"],
+    ["03", "Proyecto 3 — Agente Tool-Use", "Function calling, el loop del agente, bugs y deploy"],
+    ["04", "Lecciones transversales", "Qué se repite entre los tres proyectos"],
+    ["05", "Próximos pasos", "Hacia dónde sigue el portafolio de IA"],
   ];
-  let y = 1.85;
+  let y = 1.7;
   items.forEach(([num, title, desc]) => {
-    s.addShape(pres.ShapeType.roundRect, { x: 0.7, y, w: 0.75, h: 0.75, rectRadius: 0.12, fill: { color: PRIMARY }, line: { type: "none" } });
-    s.addText(num, { x: 0.7, y, w: 0.75, h: 0.75, align: "center", valign: "middle", fontFace: FONT_HEAD, fontSize: 20, bold: true, color: WHITE, isTextBox: true, margin: 0 });
-    s.addText(title, { x: 1.75, y: y - 0.02, w: 7.5, h: 0.4, fontFace: FONT_BODY, fontSize: 17, bold: true, color: TEXT_DARK, isTextBox: true, margin: 0 });
-    s.addText(desc, { x: 1.75, y: y + 0.36, w: 8.5, h: 0.35, fontFace: FONT_BODY, fontSize: 13, color: TEXT_MUTED, isTextBox: true, margin: 0 });
-    y += 1.15;
+    s.addShape(pres.ShapeType.roundRect, { x: 0.7, y, w: 0.7, h: 0.7, rectRadius: 0.12, fill: { color: PRIMARY }, line: { type: "none" } });
+    s.addText(num, { x: 0.7, y, w: 0.7, h: 0.7, align: "center", valign: "middle", fontFace: FONT_HEAD, fontSize: 19, bold: true, color: WHITE, isTextBox: true, margin: 0 });
+    s.addText(title, { x: 1.7, y: y - 0.02, w: 8.5, h: 0.38, fontFace: FONT_BODY, fontSize: 16.5, bold: true, color: TEXT_DARK, isTextBox: true, margin: 0 });
+    s.addText(desc, { x: 1.7, y: y + 0.34, w: 9.5, h: 0.32, fontFace: FONT_BODY, fontSize: 12.5, color: TEXT_MUTED, isTextBox: true, margin: 0 });
+    y += 1.05;
   });
   footer(s, "Guía de estudio · IA en Python");
   pageNum(s, 2);
@@ -261,25 +262,26 @@ function slideStack(kicker, title, stackItems, deployLines, resultLine, pageN) {
 // ---------- Lessons learned ----------
 function slideLessons() {
   const s = pres.addSlide();
-  contentHeader(s, "SÍNTESIS", "Lecciones que se repiten en ambos proyectos");
+  contentHeader(s, "SÍNTESIS", "Lecciones que se repiten en los tres proyectos");
   const lessons = [
-    ["Liviano en producción, pesado solo en desarrollo", "PyTorch/sentence-transformers entrenan y prueban local; ONNX Runtime / FastEmbed corren en el servidor. La regla: nada de torch en el deploy final."],
+    ["Liviano en producción, pesado solo en desarrollo", "PyTorch/sentence-transformers entrenan y prueban local; ONNX Runtime / FastEmbed corren en el servidor. Nada de torch en el deploy final."],
     ["Fija versiones, no confíes en \"latest\"", "Python 3.10 explícito, versiones exactas en requirements.txt. Los free tiers cambian de Python por defecto sin avisar, y eso rompe builds silenciosamente."],
-    ["\"Compila\" no es \"funciona\"", "Los dos proyectos parecían listos tras el build — pero fallaban en runtime real (memoria, bug de esquema). Siempre se probó con una predicción/pregunta real contra el servidor desplegado."],
+    ["\"Compila\" no es \"funciona\"", "Los tres proyectos parecían listos tras el build — pero fallaban en runtime real (memoria, esquema, un loop infinito). Siempre se probó con una pregunta real contra el servidor desplegado."],
     ["Los free tiers tienen límites reales", "512MB de RAM, cold starts de 30-60s, cambios de precios de un día para otro (Hugging Face Spaces). Hay que diseñar para esas restricciones, no asumirlas."],
+    ["El código que genera un LLM no es seguro por defecto", "Un agente que arma expresiones para un eval() es una vulnerabilidad de ejecución de código. Y no todo bug se arregla con código — a veces el fix real es el prompt."],
   ];
-  let y = 1.95;
-  const rowH = 1.28;
+  let y = 1.8;
+  const rowH = 0.98;
   lessons.forEach(([title, desc], i) => {
-    s.addShape(pres.ShapeType.roundRect, { x: 0.6, y, w: 12.1, h: rowH - 0.15, rectRadius: 0.08, fill: { color: i % 2 === 0 ? CARD_BG : WHITE }, line: i % 2 === 0 ? { type: "none" } : { color: CARD_BG, width: 1.5 } });
-    s.addShape(pres.ShapeType.ellipse, { x: 0.85, y: y + 0.19, w: 0.5, h: 0.5, fill: { color: ACCENT }, line: { type: "none" } });
-    s.addText(String(i + 1), { x: 0.85, y: y + 0.19, w: 0.5, h: 0.5, align: "center", valign: "middle", fontFace: FONT_HEAD, fontSize: 16, bold: true, color: DARK_BG, isTextBox: true, margin: 0 });
-    s.addText(title, { x: 1.6, y: y + 0.1, w: 10.8, h: 0.35, fontFace: FONT_BODY, fontSize: 14.5, bold: true, color: TEXT_DARK, isTextBox: true, margin: 0 });
-    s.addText(desc, { x: 1.6, y: y + 0.44, w: 10.8, h: rowH - 0.6, fontFace: FONT_BODY, fontSize: 11.5, color: TEXT_MUTED, isTextBox: true, margin: 0, lineSpacingMultiple: 1.15 });
+    s.addShape(pres.ShapeType.roundRect, { x: 0.6, y, w: 12.1, h: rowH - 0.12, rectRadius: 0.08, fill: { color: i % 2 === 0 ? CARD_BG : WHITE }, line: i % 2 === 0 ? { type: "none" } : { color: CARD_BG, width: 1.5 } });
+    s.addShape(pres.ShapeType.ellipse, { x: 0.8, y: y + 0.15, w: 0.42, h: 0.42, fill: { color: ACCENT }, line: { type: "none" } });
+    s.addText(String(i + 1), { x: 0.8, y: y + 0.15, w: 0.42, h: 0.42, align: "center", valign: "middle", fontFace: FONT_HEAD, fontSize: 14, bold: true, color: DARK_BG, isTextBox: true, margin: 0 });
+    s.addText(title, { x: 1.45, y: y + 0.07, w: 11.0, h: 0.3, fontFace: FONT_BODY, fontSize: 13.5, bold: true, color: TEXT_DARK, isTextBox: true, margin: 0 });
+    s.addText(desc, { x: 1.45, y: y + 0.37, w: 11.0, h: rowH - 0.45, fontFace: FONT_BODY, fontSize: 10.5, color: TEXT_MUTED, isTextBox: true, margin: 0, lineSpacingMultiple: 1.1 });
     y += rowH;
   });
   footer(s, "Guía de estudio · IA en Python");
-  pageNum(s, 20);
+  pageNum(s, 25);
 }
 
 // ---------- Closing ----------
@@ -288,9 +290,8 @@ function slideClosing() {
   s.background = { color: DARK_BG };
   s.addShape(pres.ShapeType.ellipse, { x: 9.8, y: 4.5, w: 5.5, h: 5.5, fill: { color: SECONDARY, transparency: 89 }, line: { type: "none" } });
   s.addText("PRÓXIMOS PASOS", { x: 0.9, y: 1.6, w: 8, h: 0.4, fontFace: FONT_BODY, fontSize: 13, bold: true, color: ACCENT, charSpacing: 2, isTextBox: true, margin: 0 });
-  s.addText("De 2 proyectos a un\nportafolio de IA completo", { x: 0.85, y: 2.05, w: 10.5, h: 1.7, fontFace: FONT_HEAD, fontSize: 32, bold: true, color: WHITE, isTextBox: true, margin: 0, lineSpacingMultiple: 1.05 });
+  s.addText("De 3 proyectos a un\nportafolio de IA completo", { x: 0.85, y: 2.05, w: 10.5, h: 1.7, fontFace: FONT_HEAD, fontSize: 32, bold: true, color: WHITE, isTextBox: true, margin: 0, lineSpacingMultiple: 1.05 });
   const bullets = [
-    "Agente con tool-use — el siguiente escalón natural después del RAG",
     "Sistema de recomendación — fundamentos de ML clásico",
     "Whisper (audio) y YOLO (detección) — nuevas modalidades",
     "Fine-tuning con LoRA — el más avanzado, para el final",
@@ -399,7 +400,7 @@ slideConcept(
   "Entrenar una red de reconocimiento de imágenes desde cero requiere millones de fotos etiquetadas y días de cómputo en GPU — nada realista para un proyecto de práctica.",
   "La solución: transfer learning",
   "Partir de una red ya entrenada en un problema genérico gigante (1000 categorías, 1.2 millones de fotos) y solo reenseñarle la última capa con mis 6 categorías y unos cientos de imágenes.",
-  11
+  10
 );
 slideDiagram(
   "PROYECTO 2 · ARQUITECTURA",
@@ -409,7 +410,7 @@ slideDiagram(
   "FASE B — Inferencia (app.py, en cada foto subida)",
   ["Usuario sube\nuna foto", "Preprocesar\nimagen", "Pasar por\nla red", "Softmax →\npredicción"],
   "El modelo entrenado (waste_classifier.onnx) es el único puente entre las dos fases — por eso el servidor de producción nunca necesita instalar PyTorch.",
-  12
+  11
 );
 slideSteps(
   "PROYECTO 2 · FASE A (parte 1)",
@@ -420,7 +421,7 @@ slideSteps(
     { title: "Congelar model.features", desc: "requires_grad = False en todas las capas convolucionales — ese conocimiento visual genérico no se toca." },
     { title: "Reemplazar model.classifier[1]", desc: "Nueva capa final con 6 salidas (antes 1000, las clases de ImageNet). Solo esta capa se entrena." },
   ],
-  13
+  12
 );
 slideSteps(
   "PROYECTO 2 · FASE A (parte 2)",
@@ -430,7 +431,7 @@ slideSteps(
     { title: "Data augmentation (RandomHorizontalFlip)", desc: "Voltear imágenes al azar durante el entrenamiento para generalizar mejor con pocos datos." },
     { title: "Exportar a ONNX (torch.onnx.export)", desc: "Formato estándar ejecutable con ONNX Runtime, sin necesitar PyTorch instalado en el servidor de producción." },
   ],
-  14,
+  13,
   { label: "RESULTADO DEL ENTRENAMIENTO", code: "Epoch 1/5\n  loss 1.36 - acc 49.8%\nEpoch 2/5\n  loss 0.88 - acc 68.7%\nEpoch 3/5\n  loss 0.71 - acc 75.3%\nEpoch 4/5\n  loss 0.67 - acc 77.9%\nEpoch 5/5\n  loss 0.62 - acc 77.9%\n\nExportado:\nwaste_classifier.onnx\n(8.9 MB)" }
 );
 slideSteps(
@@ -441,7 +442,7 @@ slideSteps(
     { title: "Preprocesar EXACTO igual que en el entrenamiento", desc: "Mismo tamaño (160×160), mismo rango (÷255), misma normalización (mean/std de ImageNet), mismo orden de ejes (HWC→CHW). Si algo no calza, el modelo no falla — predice mal en silencio." },
     { title: "Softmax convierte logits en probabilidades", desc: "6 números crudos del modelo se convierten en 6 probabilidades que suman 100%, listas para mostrar en gr.Label." },
   ],
-  15,
+  14,
   { label: "SOFTMAX EN LA PRÁCTICA", code: "logits crudos:\n  glass:     2.3\n  metal:     1.8\n  cardboard: -0.5\n\n↓ softmax ↓\n\nprobabilidades:\n  glass:     77%\n  metal:     16%\n  cardboard:  2%\n\n(siempre suman 100%,\nincluso si la foto no\nes ninguna categoría\nconocida)" }
 );
 slideGlossary(
@@ -453,7 +454,7 @@ slideGlossary(
     { term: "Logits vs. probabilidades", def: "Los logits son la salida cruda del modelo (cualquier magnitud); softmax los convierte en probabilidades que suman 100%." },
     { term: "ONNX Runtime", def: "Motor de inferencia liviano que ejecuta modelos exportados sin necesitar la librería original (PyTorch) — clave para deploys con poca RAM." },
   ],
-  16
+  15
 );
 slideChallenges(
   "PROYECTO 2 · TROUBLESHOOTING",
@@ -462,7 +463,7 @@ slideChallenges(
     { problem: "datasets con streaming=True se caía con MemoryError decodificando ciertas imágenes", fix: "Se cambió a descarga normal + muestreo balanceado manual sobre el dataset completo" },
     { problem: "gradio==5.7.1 crasheaba generando el schema de la API para gr.Label", fix: "Se actualizó a gradio==5.50.0, donde el bug ya estaba corregido" },
   ],
-  17
+  16
 );
 slideStack(
   "PROYECTO 2 · RESUMEN",
@@ -476,10 +477,90 @@ slideStack(
   ],
   "Plataforma: Render (free tier)\nBlueprint: render.yaml\nSin variables secretas —\ntodo corre local, sin API externa\nPython fijado: 3.10.13",
   "✓ Verificado en producción: fotos reales de prueba → \"cardboard\" 99.6%, \"glass\" 76.7%, \"paper\" 94.0% de confianza.",
+  17
+);
+
+// Project 3
+slideSection("03", "Agente Tool-Use", "Decide cuándo llamar herramientas reales: calculadora, clima, Wikipedia, hora");
+slideConcept(
+  "PROYECTO 3 · CONCEPTO",
+  "¿Por qué tool-use (function calling)?",
+  "El problema",
+  "Un LLM normal solo genera texto: no puede calcular con precisión, no sabe el clima de hoy ni la hora actual. Si le preguntas, inventa una respuesta que suena bien pero puede ser falsa (alucinación).",
+  "La solución: function calling",
+  "En vez de responder directo, el modelo puede pedir \"ejecuta la función calculator con expression='23*4'\". Python corre esa función de verdad y le devuelve el resultado, para que termine su respuesta con datos reales en la mano.",
   18
+);
+slideDiagram(
+  "PROYECTO 3 · ARQUITECTURA",
+  "El ciclo del agente",
+  "EL CICLO — se repite hasta tener suficiente información",
+  ["Pregunta del\nusuario", "¿Necesita una\nherramienta?", "Python ejecuta\nla función real", "Respuesta\nfinal"],
+  "EJEMPLO REAL — verificado en producción",
+  ["\"clima en\nOvalle?\"", "get_weather\n(city='Ovalle')", "13.0°C, viento\n3.3 km/h", "\"Está a 13°C\nen Ovalle\""],
+  "A diferencia de los proyectos 1 y 2, acá no hay dos fases separadas — es un solo ciclo que puede repetirse varias veces (hasta MAX_STEPS) antes de dar la respuesta final.",
+  19
+);
+slideSteps(
+  "PROYECTO 3 · LAS HERRAMIENTAS",
+  "4 herramientas, sin frameworks",
+  [
+    { title: "Calculadora (evaluación segura, no eval())", desc: "El LLM arma el string de la expresión — un eval() crudo sería ejecución de código arbitrario. Se usa ast.parse() y solo se permiten números y operadores aritméticos." },
+    { title: "Clima (get_weather, Open-Meteo)", desc: "Geocoding (ciudad → lat/lon) + forecast (lat/lon → clima actual). Gratis, sin API key." },
+    { title: "Búsqueda en Wikipedia (search_wikipedia)", desc: "La que más problemas dio — ver troubleshooting. Hoy resuelve el título real antes de pedir el resumen." },
+    { title: "Hora actual (get_current_time)", desc: "La única sin llamada de red — usa zoneinfo (librería estándar) para cualquier zona horaria IANA." },
+  ],
+  20,
+  { label: "SCHEMA DE UNA HERRAMIENTA", code: "{\n \"type\": \"function\",\n \"function\": {\n  \"name\":\n   \"calculator\",\n  \"description\":\n   \"Evaluate a\n   basic arithmetic\n   expression\",\n  \"parameters\": {\n   \"type\": \"object\",\n   \"properties\": {\n    \"expression\":\n     {\"type\":\n      \"string\"}\n   },\n   \"required\":\n    [\"expression\"]\n  }\n }\n}" }
+);
+slideSteps(
+  "PROYECTO 3 · EL LOOP DEL AGENTE",
+  "run_agent(): la pieza central",
+  [
+    { title: "Preguntar al modelo con tools=TOOL_SCHEMAS", desc: "Ese parámetro es lo que habilita function calling — sin él, la API se comporta como un chat normal." },
+    { title: "¿No pidió ninguna herramienta?", desc: "Ya tiene su respuesta final — se devuelve el texto y el ciclo termina." },
+    { title: "¿Pidió una herramienta?", desc: "Se guarda su petición en el historial, Python ejecuta la función real, y el resultado se agrega con role: \"tool\". El ciclo vuelve a empezar." },
+    { title: "MAX_STEPS = 5 como salvaguarda", desc: "Sin un límite, un agente con bugs (como el que encontramos) podría pedir herramientas para siempre." },
+  ],
+  21,
+  { label: "GROQ RECHAZABA ESTO", code: "# NO funciona:\nmessages.append(\n message\n  .model_dump()\n)\n# incluye campos\n# extra que Groq\n# rechaza (ej.\n# \"annotations\")\n\n# SÍ funciona:\nmessages.append({\n \"role\":\n  \"assistant\",\n \"content\":\n  message.content,\n \"tool_calls\":\n  [...]\n})" }
+);
+slideGlossary(
+  "PROYECTO 3 · CONCEPTOS CLAVE",
+  "Glosario para no perderse",
+  [
+    { term: "Function calling / tool-use", def: "La capacidad de un LLM de pedir la ejecución de una función real en vez de solo generar texto — la base de todo \"agente de IA\"." },
+    { term: "Tool schema (JSON Schema)", def: "La descripción estructurada de una herramienta (nombre, propósito, argumentos) que el modelo lee para decidir cómo llamarla." },
+    { term: "System prompt como control de comportamiento", def: "No todos los bugs se arreglan con código — a veces el fix real es una instrucción más clara en el prompt." },
+    { term: "Salvaguarda de pasos máximos", def: "Un límite explícito de vueltas del ciclo, para que un agente con bugs no quede pidiendo herramientas para siempre." },
+  ],
+  22
+);
+slideChallenges(
+  "PROYECTO 3 · TROUBLESHOOTING",
+  "2 problemas reales en el camino al deploy",
+  [
+    { problem: "La API de Wikipedia rechazaba las peticiones (403: falta un User-Agent)", fix: "Se agregó un header User-Agent descriptivo, como exige su política de bots" },
+    { problem: "El agente reintentaba variaciones de una búsqueda fallida hasta agotar MAX_STEPS", fix: "La herramienta ahora resuelve el título real primero, y el prompt le dice explícitamente que no reintente" },
+  ],
+  23
+);
+slideStack(
+  "PROYECTO 3 · RESUMEN",
+  "Stack, deploy y resultado",
+  [
+    "groq (SDK oficial) — sin LangChain, protocolo visible",
+    "requests — Open-Meteo y Wikipedia (APIs gratis)",
+    "zoneinfo (estándar) — hora por zona horaria",
+    "Groq (openai/gpt-oss-20b) — decide qué herramienta usar",
+    "Gradio — muestra los pasos del agente en cada respuesta",
+  ],
+  "Plataforma: Render (free tier)\nBlueprint: render.yaml\nVariable: GROQ_API_KEY (secreta)\nPython fijado: 3.10.13",
+  "✓ Verificado en producción: pregunta compuesta (clima + cálculo) → llamó a get_weather correctamente y resolvió ambas partes.",
+  24
 );
 
 slideLessons();
 slideClosing();
 
-pres.writeFile({ fileName: "dos-proyectos-de-ia.pptx" }).then(() => console.log("done"));
+pres.writeFile({ fileName: "tres-proyectos-de-ia.pptx" }).then(() => console.log("done"));
