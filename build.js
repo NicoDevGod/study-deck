@@ -43,7 +43,7 @@ function slideTitle() {
   s.addText("GUÍA DE ESTUDIO", {
     x: 0.9, y: 2.15, w: 8, h: 0.4, fontFace: FONT_BODY, fontSize: 14, color: ACCENT, charSpacing: 3, bold: true, isTextBox: true, margin: 0,
   });
-  s.addText("Dos proyectos de IA,\nde cero a producción", {
+  s.addText("Tres proyectos de IA,\nde cero a producción", {
     x: 0.85, y: 2.55, w: 10.5, h: 2.0, fontFace: FONT_HEAD, fontSize: 40, bold: true, color: WHITE, isTextBox: true, margin: 0, lineSpacingMultiple: 1.05,
   });
   s.addText("Chatbot RAG · Clasificador de Residuos · Agente Tool-Use", {
