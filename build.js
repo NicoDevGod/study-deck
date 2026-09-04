@@ -43,11 +43,11 @@ function slideTitle() {
   s.addText("GUÍA DE ESTUDIO", {
     x: 0.9, y: 2.15, w: 8, h: 0.4, fontFace: FONT_BODY, fontSize: 14, color: ACCENT, charSpacing: 3, bold: true, isTextBox: true, margin: 0,
   });
-  s.addText("Tres proyectos de IA,\nde cero a producción", {
+  s.addText("Cuatro proyectos de IA,\nde cero a producción", {
     x: 0.85, y: 2.55, w: 10.5, h: 2.0, fontFace: FONT_HEAD, fontSize: 40, bold: true, color: WHITE, isTextBox: true, margin: 0, lineSpacingMultiple: 1.05,
   });
-  s.addText("Chatbot RAG · Clasificador de Residuos · Agente Tool-Use", {
-    x: 0.9, y: 4.55, w: 11, h: 0.5, fontFace: FONT_BODY, fontSize: 18, color: "CFEFEC", isTextBox: true, margin: 0,
+  s.addText("Chatbot RAG · Clasificador de Residuos · Agente Tool-Use · Recomendador", {
+    x: 0.9, y: 4.55, w: 11.5, h: 0.5, fontFace: FONT_BODY, fontSize: 16, color: "CFEFEC", isTextBox: true, margin: 0,
   });
   s.addText("Arquitectura · decisiones de diseño · bugs reales y cómo se resolvieron", {
     x: 0.9, y: 5.05, w: 10, h: 0.4, fontFace: FONT_BODY, fontSize: 13, italic: true, color: "9FC9C6", isTextBox: true, margin: 0,
@@ -89,16 +89,17 @@ function slideAgenda() {
     ["01", "Proyecto 1 — Chatbot RAG", "Arquitectura, decisiones, bugs y deploy"],
     ["02", "Proyecto 2 — Clasificador de Residuos", "Transfer learning, ONNX, bugs y deploy"],
     ["03", "Proyecto 3 — Agente Tool-Use", "Function calling, el loop del agente, bugs y deploy"],
-    ["04", "Lecciones transversales", "Qué se repite entre los tres proyectos"],
-    ["05", "Próximos pasos", "Hacia dónde sigue el portafolio de IA"],
+    ["04", "Proyecto 4 — Recomendador de Películas", "Filtrado colaborativo, matrices ralas, sin bugs esta vez"],
+    ["05", "Lecciones transversales", "Qué se repite entre los cuatro proyectos"],
+    ["06", "Próximos pasos", "Hacia dónde sigue el portafolio de IA"],
   ];
-  let y = 1.7;
+  let y = 1.55;
   items.forEach(([num, title, desc]) => {
-    s.addShape(pres.ShapeType.roundRect, { x: 0.7, y, w: 0.7, h: 0.7, rectRadius: 0.12, fill: { color: PRIMARY }, line: { type: "none" } });
-    s.addText(num, { x: 0.7, y, w: 0.7, h: 0.7, align: "center", valign: "middle", fontFace: FONT_HEAD, fontSize: 19, bold: true, color: WHITE, isTextBox: true, margin: 0 });
-    s.addText(title, { x: 1.7, y: y - 0.02, w: 8.5, h: 0.38, fontFace: FONT_BODY, fontSize: 16.5, bold: true, color: TEXT_DARK, isTextBox: true, margin: 0 });
-    s.addText(desc, { x: 1.7, y: y + 0.34, w: 9.5, h: 0.32, fontFace: FONT_BODY, fontSize: 12.5, color: TEXT_MUTED, isTextBox: true, margin: 0 });
-    y += 1.05;
+    s.addShape(pres.ShapeType.roundRect, { x: 0.7, y, w: 0.62, h: 0.62, rectRadius: 0.11, fill: { color: PRIMARY }, line: { type: "none" } });
+    s.addText(num, { x: 0.7, y, w: 0.62, h: 0.62, align: "center", valign: "middle", fontFace: FONT_HEAD, fontSize: 17, bold: true, color: WHITE, isTextBox: true, margin: 0 });
+    s.addText(title, { x: 1.6, y: y - 0.03, w: 9.5, h: 0.34, fontFace: FONT_BODY, fontSize: 15, bold: true, color: TEXT_DARK, isTextBox: true, margin: 0 });
+    s.addText(desc, { x: 1.6, y: y + 0.29, w: 10.2, h: 0.3, fontFace: FONT_BODY, fontSize: 11.5, color: TEXT_MUTED, isTextBox: true, margin: 0 });
+    y += 0.9;
   });
   footer(s, "Guía de estudio · IA en Python");
   pageNum(s, 2);
@@ -262,26 +263,27 @@ function slideStack(kicker, title, stackItems, deployLines, resultLine, pageN) {
 // ---------- Lessons learned ----------
 function slideLessons() {
   const s = pres.addSlide();
-  contentHeader(s, "SÍNTESIS", "Lecciones que se repiten en los tres proyectos");
+  contentHeader(s, "SÍNTESIS", "Lecciones que se repiten en los cuatro proyectos");
   const lessons = [
     ["Liviano en producción, pesado solo en desarrollo", "PyTorch/sentence-transformers entrenan y prueban local; ONNX Runtime / FastEmbed corren en el servidor. Nada de torch en el deploy final."],
     ["Fija versiones, no confíes en \"latest\"", "Python 3.10 explícito, versiones exactas en requirements.txt. Los free tiers cambian de Python por defecto sin avisar, y eso rompe builds silenciosamente."],
-    ["\"Compila\" no es \"funciona\"", "Los tres proyectos parecían listos tras el build — pero fallaban en runtime real (memoria, esquema, un loop infinito). Siempre se probó con una pregunta real contra el servidor desplegado."],
+    ["\"Compila\" no es \"funciona\"", "Los proyectos parecían listos tras el build — pero fallaban en runtime real (memoria, esquema, un loop infinito). Siempre se probó con una pregunta real contra el servidor desplegado."],
     ["Los free tiers tienen límites reales", "512MB de RAM, cold starts de 30-60s, cambios de precios de un día para otro (Hugging Face Spaces). Hay que diseñar para esas restricciones, no asumirlas."],
     ["El código que genera un LLM no es seguro por defecto", "Un agente que arma expresiones para un eval() es una vulnerabilidad de ejecución de código. Y no todo bug se arregla con código — a veces el fix real es el prompt."],
+    ["No todo problema necesita deep learning", "El recomendador de películas (proyecto 4) no usó ninguna red neuronal — matrices ralas y similitud coseno bastaron, y fue el único deploy sin bugs."],
   ];
-  let y = 1.8;
-  const rowH = 0.98;
+  let y = 1.65;
+  const rowH = 0.85;
   lessons.forEach(([title, desc], i) => {
-    s.addShape(pres.ShapeType.roundRect, { x: 0.6, y, w: 12.1, h: rowH - 0.12, rectRadius: 0.08, fill: { color: i % 2 === 0 ? CARD_BG : WHITE }, line: i % 2 === 0 ? { type: "none" } : { color: CARD_BG, width: 1.5 } });
-    s.addShape(pres.ShapeType.ellipse, { x: 0.8, y: y + 0.15, w: 0.42, h: 0.42, fill: { color: ACCENT }, line: { type: "none" } });
-    s.addText(String(i + 1), { x: 0.8, y: y + 0.15, w: 0.42, h: 0.42, align: "center", valign: "middle", fontFace: FONT_HEAD, fontSize: 14, bold: true, color: DARK_BG, isTextBox: true, margin: 0 });
-    s.addText(title, { x: 1.45, y: y + 0.07, w: 11.0, h: 0.3, fontFace: FONT_BODY, fontSize: 13.5, bold: true, color: TEXT_DARK, isTextBox: true, margin: 0 });
-    s.addText(desc, { x: 1.45, y: y + 0.37, w: 11.0, h: rowH - 0.45, fontFace: FONT_BODY, fontSize: 10.5, color: TEXT_MUTED, isTextBox: true, margin: 0, lineSpacingMultiple: 1.1 });
+    s.addShape(pres.ShapeType.roundRect, { x: 0.6, y, w: 12.1, h: rowH - 0.1, rectRadius: 0.08, fill: { color: i % 2 === 0 ? CARD_BG : WHITE }, line: i % 2 === 0 ? { type: "none" } : { color: CARD_BG, width: 1.5 } });
+    s.addShape(pres.ShapeType.ellipse, { x: 0.78, y: y + 0.13, w: 0.38, h: 0.38, fill: { color: ACCENT }, line: { type: "none" } });
+    s.addText(String(i + 1), { x: 0.78, y: y + 0.13, w: 0.38, h: 0.38, align: "center", valign: "middle", fontFace: FONT_HEAD, fontSize: 13, bold: true, color: DARK_BG, isTextBox: true, margin: 0 });
+    s.addText(title, { x: 1.4, y: y + 0.06, w: 11.0, h: 0.28, fontFace: FONT_BODY, fontSize: 13, bold: true, color: TEXT_DARK, isTextBox: true, margin: 0 });
+    s.addText(desc, { x: 1.4, y: y + 0.34, w: 11.1, h: rowH - 0.4, fontFace: FONT_BODY, fontSize: 10, color: TEXT_MUTED, isTextBox: true, margin: 0, lineSpacingMultiple: 1.08 });
     y += rowH;
   });
   footer(s, "Guía de estudio · IA en Python");
-  pageNum(s, 25);
+  pageNum(s, 32);
 }
 
 // ---------- Closing ----------
@@ -290,9 +292,8 @@ function slideClosing() {
   s.background = { color: DARK_BG };
   s.addShape(pres.ShapeType.ellipse, { x: 9.8, y: 4.5, w: 5.5, h: 5.5, fill: { color: SECONDARY, transparency: 89 }, line: { type: "none" } });
   s.addText("PRÓXIMOS PASOS", { x: 0.9, y: 1.6, w: 8, h: 0.4, fontFace: FONT_BODY, fontSize: 13, bold: true, color: ACCENT, charSpacing: 2, isTextBox: true, margin: 0 });
-  s.addText("De 3 proyectos a un\nportafolio de IA completo", { x: 0.85, y: 2.05, w: 10.5, h: 1.7, fontFace: FONT_HEAD, fontSize: 32, bold: true, color: WHITE, isTextBox: true, margin: 0, lineSpacingMultiple: 1.05 });
+  s.addText("De 4 proyectos a un\nportafolio de IA completo", { x: 0.85, y: 2.05, w: 10.5, h: 1.7, fontFace: FONT_HEAD, fontSize: 32, bold: true, color: WHITE, isTextBox: true, margin: 0, lineSpacingMultiple: 1.05 });
   const bullets = [
-    "Sistema de recomendación — fundamentos de ML clásico",
     "Whisper (audio) y YOLO (detección) — nuevas modalidades",
     "Fine-tuning con LoRA — el más avanzado, para el final",
   ];
@@ -560,7 +561,82 @@ slideStack(
   24
 );
 
+// Project 4
+slideSection("04", "Recomendador de Películas", "Filtrado colaborativo: recomienda sin redes neuronales, con matrices y similitud coseno");
+slideConcept(
+  "PROYECTO 4 · CONCEPTO",
+  "¿Por qué filtrado colaborativo?",
+  "El problema",
+  "No todo problema de IA necesita una red neuronal. Recomendar películas parecidas podría intentarse con deep learning, pero sería sobre-ingeniería cuando el patrón real es más simple: usuarios parecidos tienden a gustar de cosas parecidas.",
+  "La solución: filtrado colaborativo",
+  "Representar cada película como un vector de cómo la calificó cada usuario, y comparar películas por similitud coseno entre esos vectores. Ni géneros ni actores — la recomendación surge solo del patrón de calificaciones.",
+  25
+);
+slideDiagram(
+  "PROYECTO 4 · ARQUITECTURA",
+  "Otra vez, dos fases",
+  "FASE A — Indexado (build_index, una vez, al arrancar)",
+  ["Cargar los\nCSVs", "Filtrar películas\ncon pocas ratings", "Construir matriz\nrala (sparse)", "Lista para\nconsultar"],
+  "FASE B — Consulta (recommend, en cada búsqueda)",
+  ["Usuario elige\nuna película", "Comparar contra\ntodas las demás", "Ordenar por\nsimilitud coseno", "Top 10\nrecomendaciones"],
+  "Mismo patrón mental que el chatbot RAG: indexar una vez, consultar muchas veces. Acá 'indexar' es construir la matriz de calificaciones, no embeddings de texto.",
+  26
+);
+slideSteps(
+  "PROYECTO 4 · FASE A",
+  "Construir el índice (build_index)",
+  [
+    { title: "Cargar los CSVs (movies.csv, ratings.csv)", desc: "MovieLens ml-latest-small: ~100.000 calificaciones, ~9700 películas, 610 usuarios. Nunca se usan los géneros — solo el patrón de calificaciones." },
+    { title: "Filtrar películas con pocas calificaciones", desc: "MIN_RATINGS=10 descarta películas sin señal suficiente para una similitud confiable. Sobreviven ~2270 de las ~9700." },
+    { title: "Construir una matriz RALA (csr_matrix)", desc: "Matriz películas × usuarios. Solo se guardan las ~81.000 celdas con valor real, no las ~1.38 millones de huecos — la diferencia entre caber en memoria y no caber." },
+  ],
+  27
+);
+slideSteps(
+  "PROYECTO 4 · FASE B",
+  "La consulta (recommend)",
+  [
+    { title: "Tomar el vector de la película elegida", desc: "Su fila completa en la matriz: cómo la calificó cada uno de los 610 usuarios." },
+    { title: "cosine_similarity contra toda la matriz", desc: "Una sola llamada vectorizada compara ese vector contra las ~2270 películas a la vez, sin loops en Python." },
+    { title: "Ordenar y devolver el top 10", desc: "Se descarta la propia película (similitud 1.0 consigo misma) antes de completar la lista." },
+  ],
+  28,
+  { label: "SIMILITUD COSENO", code: "logits crudos no\nexisten acá --\nes geometría:\n\nToy Story vs.\nToy Story 2:\n  0.57\n\nToy Story vs.\nPulp Fiction:\n  0.12\n\n(mismos usuarios\ncalificando parecido\n= vectores apuntando\na la misma direccion)" }
+);
+slideGlossary(
+  "PROYECTO 4 · CONCEPTOS CLAVE",
+  "Glosario para no perderse",
+  [
+    { term: "Filtrado colaborativo", def: "Recomendar basado en el comportamiento colectivo de miles de usuarios, no en entender el contenido (género, actores) de lo recomendado." },
+    { term: "Matriz rala (sparse)", def: "Estructura que solo guarda las celdas con valor real, ignorando los huecos — clave cuando la mayoría de combinaciones usuario-ítem nunca ocurrieron." },
+    { term: "Similitud coseno", def: "Mide qué tan parecida es la dirección de dos vectores (-1 a 1), ignorando su magnitud. Base de la búsqueda semántica del proyecto 1 también." },
+    { term: "Complejidad cuadrática", def: "Precalcular todas las similitudes entre todos los pares crece con el cuadrado del catálogo — el mismo tipo de trampa de memoria de los proyectos 1 y 2." },
+  ],
+  29
+);
+slideChallenges(
+  "PROYECTO 4 · DECISIÓN DE DISEÑO",
+  "Sin bugs esta vez — pero 1 decisión que evitó uno",
+  [
+    { problem: "Tentación: precalcular toda la matriz película-película al arrancar (2270×2270)", fix: "Se calcula la similitud una fila a la vez, por consulta — nunca se guarda la matriz completa en memoria" },
+  ],
+  30
+);
+slideStack(
+  "PROYECTO 4 · RESUMEN",
+  "Stack, deploy y resultado",
+  [
+    "pandas — cargar y filtrar los CSVs",
+    "scipy (csr_matrix) — matriz rala de calificaciones",
+    "scikit-learn (cosine_similarity) — comparar películas",
+    "Gradio — dropdown con búsqueda de películas",
+  ],
+  "Plataforma: Render (free tier)\nBlueprint: render.yaml\nSin variables secretas —\nsin API externa, dataset incluido\nPython fijado: 3.10.13",
+  "✓ Verificado en producción: \"Toy Story (1995)\" → Toy Story 2, Jurassic Park, Star Wars — resultado idéntico al local, primer deploy sin bugs.",
+  31
+);
+
 slideLessons();
 slideClosing();
 
-pres.writeFile({ fileName: "tres-proyectos-de-ia.pptx" }).then(() => console.log("done"));
+pres.writeFile({ fileName: "cuatro-proyectos-de-ia.pptx" }).then(() => console.log("done"));
