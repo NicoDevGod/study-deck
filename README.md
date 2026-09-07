@@ -1,6 +1,6 @@
-# Study Deck — Cuatro Proyectos de IA
+# Study Deck — Cinco Proyectos de IA
 
-Presentación de estudio (`cuatro-proyectos-de-ia.pptx`) que documenta en profundidad
+Presentación de estudio (`cinco-proyectos-de-ia.pptx`) que documenta en profundidad
 los proyectos de IA construidos para practicar:
 
 - [RAG Chatbot](https://github.com/NicoDevGod/rag-chatbot-cv) — chatbot con
@@ -11,8 +11,10 @@ los proyectos de IA construidos para practicar:
   calling (calculadora, clima, Wikipedia, hora) vía la API nativa de Groq.
 - [Movie Recommender](https://github.com/NicoDevGod/movie-recommender) — filtrado
   colaborativo (matrices ralas + similitud coseno), sin redes neuronales.
+- [Object Detector](https://github.com/NicoDevGod/object-detector) — detección de
+  objetos con YOLOv8n (ONNX), decodificación y NMS implementados a mano.
 
-37 diapositivas: arquitectura de cada proyecto, conceptos clave explicados desde
+45 diapositivas: arquitectura de cada proyecto, conceptos clave explicados desde
 cero, los bugs reales que aparecieron en el camino al deploy y cómo se resolvieron,
 y las lecciones que se repiten entre todos. Este deck crece con cada proyecto
 nuevo del portafolio de IA.
@@ -26,4 +28,4 @@ npm install
 node build.js
 ```
 
-Produce `cuatro-proyectos-de-ia.pptx` en el mismo directorio.
+Produce `cinco-proyectos-de-ia.pptx` en el mismo directorio.

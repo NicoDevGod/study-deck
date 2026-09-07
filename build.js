@@ -43,11 +43,11 @@ function slideTitle() {
   s.addText("GUÍA DE ESTUDIO", {
     x: 0.9, y: 2.15, w: 8, h: 0.4, fontFace: FONT_BODY, fontSize: 14, color: ACCENT, charSpacing: 3, bold: true, isTextBox: true, margin: 0,
   });
-  s.addText("Cuatro proyectos de IA,\nde cero a producción", {
+  s.addText("Cinco proyectos de IA,\nde cero a producción", {
     x: 0.85, y: 2.55, w: 10.5, h: 2.0, fontFace: FONT_HEAD, fontSize: 40, bold: true, color: WHITE, isTextBox: true, margin: 0, lineSpacingMultiple: 1.05,
   });
-  s.addText("Chatbot RAG · Clasificador de Residuos · Agente Tool-Use · Recomendador", {
-    x: 0.9, y: 4.55, w: 11.5, h: 0.5, fontFace: FONT_BODY, fontSize: 16, color: "CFEFEC", isTextBox: true, margin: 0,
+  s.addText("Chatbot RAG · Clasificador de Residuos · Agente Tool-Use · Recomendador · Detector de Objetos", {
+    x: 0.9, y: 4.55, w: 11.5, h: 0.5, fontFace: FONT_BODY, fontSize: 14.5, color: "CFEFEC", isTextBox: true, margin: 0,
   });
   s.addText("Arquitectura · decisiones de diseño · bugs reales y cómo se resolvieron", {
     x: 0.9, y: 5.05, w: 10, h: 0.4, fontFace: FONT_BODY, fontSize: 13, italic: true, color: "9FC9C6", isTextBox: true, margin: 0,
@@ -90,16 +90,17 @@ function slideAgenda() {
     ["02", "Proyecto 2 — Clasificador de Residuos", "Transfer learning, ONNX, bugs y deploy"],
     ["03", "Proyecto 3 — Agente Tool-Use", "Function calling, el loop del agente, bugs y deploy"],
     ["04", "Proyecto 4 — Recomendador de Películas", "Filtrado colaborativo, matrices ralas, sin bugs esta vez"],
-    ["05", "Lecciones transversales", "Qué se repite entre los cuatro proyectos"],
-    ["06", "Próximos pasos", "Hacia dónde sigue el portafolio de IA"],
+    ["05", "Proyecto 5 — Detector de Objetos", "YOLOv8n, ONNX, NMS a mano, sin bugs otra vez"],
+    ["06", "Lecciones transversales", "Qué se repite entre los cinco proyectos"],
+    ["07", "Próximos pasos", "Hacia dónde sigue el portafolio de IA"],
   ];
-  let y = 1.55;
+  let y = 1.45;
   items.forEach(([num, title, desc]) => {
-    s.addShape(pres.ShapeType.roundRect, { x: 0.7, y, w: 0.62, h: 0.62, rectRadius: 0.11, fill: { color: PRIMARY }, line: { type: "none" } });
-    s.addText(num, { x: 0.7, y, w: 0.62, h: 0.62, align: "center", valign: "middle", fontFace: FONT_HEAD, fontSize: 17, bold: true, color: WHITE, isTextBox: true, margin: 0 });
-    s.addText(title, { x: 1.6, y: y - 0.03, w: 9.5, h: 0.34, fontFace: FONT_BODY, fontSize: 15, bold: true, color: TEXT_DARK, isTextBox: true, margin: 0 });
-    s.addText(desc, { x: 1.6, y: y + 0.29, w: 10.2, h: 0.3, fontFace: FONT_BODY, fontSize: 11.5, color: TEXT_MUTED, isTextBox: true, margin: 0 });
-    y += 0.9;
+    s.addShape(pres.ShapeType.roundRect, { x: 0.7, y, w: 0.58, h: 0.58, rectRadius: 0.1, fill: { color: PRIMARY }, line: { type: "none" } });
+    s.addText(num, { x: 0.7, y, w: 0.58, h: 0.58, align: "center", valign: "middle", fontFace: FONT_HEAD, fontSize: 16, bold: true, color: WHITE, isTextBox: true, margin: 0 });
+    s.addText(title, { x: 1.55, y: y - 0.04, w: 9.5, h: 0.32, fontFace: FONT_BODY, fontSize: 14.5, bold: true, color: TEXT_DARK, isTextBox: true, margin: 0 });
+    s.addText(desc, { x: 1.55, y: y + 0.27, w: 10.2, h: 0.28, fontFace: FONT_BODY, fontSize: 11, color: TEXT_MUTED, isTextBox: true, margin: 0 });
+    y += 0.78;
   });
   footer(s, "Guía de estudio · IA en Python");
   pageNum(s, 2);
@@ -263,27 +264,28 @@ function slideStack(kicker, title, stackItems, deployLines, resultLine, pageN) {
 // ---------- Lessons learned ----------
 function slideLessons() {
   const s = pres.addSlide();
-  contentHeader(s, "SÍNTESIS", "Lecciones que se repiten en los cuatro proyectos");
+  contentHeader(s, "SÍNTESIS", "Lecciones que se repiten en los cinco proyectos");
   const lessons = [
-    ["Liviano en producción, pesado solo en desarrollo", "PyTorch/sentence-transformers entrenan y prueban local; ONNX Runtime / FastEmbed corren en el servidor. Nada de torch en el deploy final."],
+    ["Liviano en producción, pesado solo en desarrollo", "PyTorch/sentence-transformers/Ultralytics entrenan y prueban local; ONNX Runtime / FastEmbed corren en el servidor. Nada de torch en el deploy final."],
     ["Fija versiones, no confíes en \"latest\"", "Python 3.10 explícito, versiones exactas en requirements.txt. Los free tiers cambian de Python por defecto sin avisar, y eso rompe builds silenciosamente."],
     ["\"Compila\" no es \"funciona\"", "Los proyectos parecían listos tras el build — pero fallaban en runtime real (memoria, esquema, un loop infinito). Siempre se probó con una pregunta real contra el servidor desplegado."],
     ["Los free tiers tienen límites reales", "512MB de RAM, cold starts de 30-60s, cambios de precios de un día para otro (Hugging Face Spaces). Hay que diseñar para esas restricciones, no asumirlas."],
     ["El código que genera un LLM no es seguro por defecto", "Un agente que arma expresiones para un eval() es una vulnerabilidad de ejecución de código. Y no todo bug se arregla con código — a veces el fix real es el prompt."],
-    ["No todo problema necesita deep learning", "El recomendador de películas (proyecto 4) no usó ninguna red neuronal — matrices ralas y similitud coseno bastaron, y fue el único deploy sin bugs."],
+    ["No todo problema necesita deep learning", "El recomendador de películas (proyecto 4) no usó ninguna red neuronal — matrices ralas y similitud coseno bastaron, y fue el único deploy sin bugs de ese tipo."],
+    ["Reimplementar una función simple > instalar la librería entera", "Evaluación segura con ast en vez de eval() (proyecto 3), similitud por consulta en vez de precalculada (proyecto 4), IoU/NMS a mano en vez de torchvision (proyecto 5) — el mismo patrón, tres veces."],
   ];
-  let y = 1.65;
-  const rowH = 0.85;
+  let y = 1.5;
+  const rowH = 0.77;
   lessons.forEach(([title, desc], i) => {
-    s.addShape(pres.ShapeType.roundRect, { x: 0.6, y, w: 12.1, h: rowH - 0.1, rectRadius: 0.08, fill: { color: i % 2 === 0 ? CARD_BG : WHITE }, line: i % 2 === 0 ? { type: "none" } : { color: CARD_BG, width: 1.5 } });
-    s.addShape(pres.ShapeType.ellipse, { x: 0.78, y: y + 0.13, w: 0.38, h: 0.38, fill: { color: ACCENT }, line: { type: "none" } });
-    s.addText(String(i + 1), { x: 0.78, y: y + 0.13, w: 0.38, h: 0.38, align: "center", valign: "middle", fontFace: FONT_HEAD, fontSize: 13, bold: true, color: DARK_BG, isTextBox: true, margin: 0 });
-    s.addText(title, { x: 1.4, y: y + 0.06, w: 11.0, h: 0.28, fontFace: FONT_BODY, fontSize: 13, bold: true, color: TEXT_DARK, isTextBox: true, margin: 0 });
-    s.addText(desc, { x: 1.4, y: y + 0.34, w: 11.1, h: rowH - 0.4, fontFace: FONT_BODY, fontSize: 10, color: TEXT_MUTED, isTextBox: true, margin: 0, lineSpacingMultiple: 1.08 });
+    s.addShape(pres.ShapeType.roundRect, { x: 0.6, y, w: 12.1, h: rowH - 0.08, rectRadius: 0.08, fill: { color: i % 2 === 0 ? CARD_BG : WHITE }, line: i % 2 === 0 ? { type: "none" } : { color: CARD_BG, width: 1.5 } });
+    s.addShape(pres.ShapeType.ellipse, { x: 0.76, y: y + 0.11, w: 0.34, h: 0.34, fill: { color: ACCENT }, line: { type: "none" } });
+    s.addText(String(i + 1), { x: 0.76, y: y + 0.11, w: 0.34, h: 0.34, align: "center", valign: "middle", fontFace: FONT_HEAD, fontSize: 12, bold: true, color: DARK_BG, isTextBox: true, margin: 0 });
+    s.addText(title, { x: 1.36, y: y + 0.04, w: 11.1, h: 0.26, fontFace: FONT_BODY, fontSize: 12, bold: true, color: TEXT_DARK, isTextBox: true, margin: 0 });
+    s.addText(desc, { x: 1.36, y: y + 0.3, w: 11.2, h: rowH - 0.36, fontFace: FONT_BODY, fontSize: 9.5, color: TEXT_MUTED, isTextBox: true, margin: 0, lineSpacingMultiple: 1.05 });
     y += rowH;
   });
   footer(s, "Guía de estudio · IA en Python");
-  pageNum(s, 32);
+  pageNum(s, 39);
 }
 
 // ---------- Closing ----------
@@ -292,9 +294,9 @@ function slideClosing() {
   s.background = { color: DARK_BG };
   s.addShape(pres.ShapeType.ellipse, { x: 9.8, y: 4.5, w: 5.5, h: 5.5, fill: { color: SECONDARY, transparency: 89 }, line: { type: "none" } });
   s.addText("PRÓXIMOS PASOS", { x: 0.9, y: 1.6, w: 8, h: 0.4, fontFace: FONT_BODY, fontSize: 13, bold: true, color: ACCENT, charSpacing: 2, isTextBox: true, margin: 0 });
-  s.addText("De 4 proyectos a un\nportafolio de IA completo", { x: 0.85, y: 2.05, w: 10.5, h: 1.7, fontFace: FONT_HEAD, fontSize: 32, bold: true, color: WHITE, isTextBox: true, margin: 0, lineSpacingMultiple: 1.05 });
+  s.addText("De 5 proyectos a un\nportafolio de IA completo", { x: 0.85, y: 2.05, w: 10.5, h: 1.7, fontFace: FONT_HEAD, fontSize: 32, bold: true, color: WHITE, isTextBox: true, margin: 0, lineSpacingMultiple: 1.05 });
   const bullets = [
-    "Whisper (audio) y YOLO (detección) — nuevas modalidades",
+    "Whisper (audio) — última modalidad pendiente",
     "Fine-tuning con LoRA — el más avanzado, para el final",
   ];
   let y = 4.0;
@@ -636,7 +638,84 @@ slideStack(
   31
 );
 
+// Project 5
+slideSection("05", "Detector de Objetos", "YOLOv8n dibuja una caja y una etiqueta sobre cada objeto que reconoce en una foto");
+slideConcept(
+  "PROYECTO 5 · CONCEPTO",
+  "¿Por qué YOLO necesita más que clasificar?",
+  "El problema",
+  "Clasificar (proyecto 2) responde una sola pregunta por imagen: \"¿qué es esto?\". Pero una foto real puede tener cero, una o veinte objetos distintos, cada uno en una posición distinta — clasificación no alcanza.",
+  "La solución: detección",
+  "YOLOv8n (pre-entrenado en COCO, 80 categorías) no solo dice qué hay — dice dónde: predice miles de cajas candidatas por imagen, cada una con su propia clase y nivel de confianza.",
+  32
+);
+slideDiagram(
+  "PROYECTO 5 · ARQUITECTURA",
+  "De pesos pre-entrenados a cajas dibujadas",
+  "PREPARACIÓN (export_onnx.py, una vez, offline)",
+  ["Modelo YOLOv8n\npre-entrenado", "Exportar\na ONNX", "Guardar en\nmodel/", "Listo para\nservir"],
+  "INFERENCIA (app.py, en cada foto subida)",
+  ["Usuario sube\nuna foto", "Letterbox +\ninferencia ONNX", "Decodificar\n+ NMS", "Cajas dibujadas\nsobre la foto"],
+  "model/yolov8n.onnx es el único puente entre las dos fases — igual que en el clasificador de residuos, el servidor de producción nunca necesita instalar PyTorch ni Ultralytics.",
+  33
+);
+slideSteps(
+  "PROYECTO 5 · PREPROCESAMIENTO",
+  "Letterbox: por qué no un resize directo",
+  [
+    { title: "Un resize directo distorsiona la imagen", desc: "Estirar una foto rectangular a 640×640 cambia las proporciones reales de cada objeto — YOLO fue entrenado con proporciones reales, así que sus cajas saldrían mal calibradas." },
+    { title: "Letterbox: redimensionar + rellenar", desc: "Se escala manteniendo la proporción original y se rellena el sobrante con gris (114,114,114) — la misma técnica que usan los reproductores de video para mostrar contenido 16:9 en una pantalla 4:3." },
+    { title: "Guardar ratio y padding", desc: "Son los únicos datos que permiten, después, traducir una caja detectada en el espacio 640×640 con relleno de vuelta a las coordenadas reales de la foto original." },
+  ],
+  34,
+  { label: "LETTERBOX (app.py)", code: "ratio = min(\n size/w, size/h)\nnew_w = w*ratio\nnew_h = h*ratio\n\ncanvas = Image.new(\n \"RGB\",\n (640,640),\n (114,114,114))\ncanvas.paste(\n resized,\n (pad_x,pad_y))" }
+);
+slideSteps(
+  "PROYECTO 5 · DECODIFICAR Y LIMPIAR",
+  "De 8400 candidatos a cajas reales",
+  [
+    { title: "8400 candidatos, 84 números cada uno", desc: "4 números de caja (centro x/y, ancho, alto) + 80 probabilidades de clase, uno por cada posición de una grilla que cubre la imagen a distintas escalas." },
+    { title: "Filtrar por confianza (≥35%)", desc: "La inmensa mayoría de los 8400 candidatos son ruido — el umbral deja normalmente solo un puñado de detecciones reales por foto." },
+    { title: "NMS: eliminar cajas duplicadas", desc: "Un mismo objeto genera varias cajas casi idénticas superpuestas. Non-Max Suppression se queda con la de mayor confianza y descarta las que se solapan demasiado (IoU alto)." },
+  ],
+  35,
+  { label: "TRUCO: SEPARAR POR CLASE", code: "# offset gigante\n# por clase antes\n# de comparar IoU\noffset = (\n class_ids[:,None]\n * 10_000.0\n)\nboxes_for_nms = (\n boxes + offset\n)\n\n# perro y gato\n# juntos ya no se\n# suprimen entre\n# si" }
+);
+slideGlossary(
+  "PROYECTO 5 · CONCEPTOS CLAVE",
+  "Glosario para no perderse",
+  [
+    { term: "Detección de objetos", def: "A diferencia de clasificar, dice qué objetos hay Y dónde está cada uno — puede haber cero, uno o muchos por imagen." },
+    { term: "Grilla de candidatos (8400)", def: "YOLO evalúa miles de posiciones posibles a la vez en una sola pasada de la red, no una por una." },
+    { term: "IoU (Intersection over Union)", def: "Área compartida entre dos cajas dividida por su área combinada — mide cuánto se superponen dos detecciones." },
+    { term: "Non-Max Suppression (NMS)", def: "Algoritmo greedy que elimina cajas redundantes sobre el mismo objeto, quedándose solo con la de mayor confianza." },
+  ],
+  36
+);
+slideChallenges(
+  "PROYECTO 5 · DECISIÓN DE DISEÑO",
+  "Sin bugs esta vez — pero 1 decisión que evitó instalar torch en producción",
+  [
+    { problem: "Tentación: usar torchvision.ops.nms, la función ya lista para usar", fix: "Se implementó IoU + NMS a mano en numpy (15 líneas) — así requirements.txt nunca necesita instalar torch completo solo para una función" },
+  ],
+  37
+);
+slideStack(
+  "PROYECTO 5 · RESUMEN",
+  "Stack, deploy y resultado",
+  [
+    "Ultralytics + PyTorch — exportar el modelo (solo local/dev)",
+    "YOLOv8n — arquitectura pre-entrenada en COCO (80 clases)",
+    "ONNX Runtime — inferencia en producción",
+    "NumPy — decodificación y NMS manual, sin torchvision",
+    "Gradio — interfaz de subida de foto",
+  ],
+  "Plataforma: Render (free tier)\nBlueprint: render.yaml\nSin variables secretas —\nmodelo ONNX incluido en el repo\nPython fijado: 3.10.13",
+  "✓ Verificado localmente: bus.jpg → bus (84%) y 4 personas (90%, 88%, 87%, 43%) detectadas y ubicadas correctamente.",
+  38
+);
+
 slideLessons();
 slideClosing();
 
-pres.writeFile({ fileName: "cuatro-proyectos-de-ia.pptx" }).then(() => console.log("done"));
+pres.writeFile({ fileName: "cinco-proyectos-de-ia.pptx" }).then(() => console.log("done"));
