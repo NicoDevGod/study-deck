@@ -711,7 +711,7 @@ slideStack(
     "Gradio — interfaz de subida de foto",
   ],
   "Plataforma: Render (free tier)\nBlueprint: render.yaml\nSin variables secretas —\nmodelo ONNX incluido en el repo\nPython fijado: 3.10.13",
-  "✓ Verificado localmente: bus.jpg → bus (84%) y 4 personas (90%, 88%, 87%, 43%) detectadas y ubicadas correctamente.",
+  "✓ Verificado en producción: bus.jpg → bus (84%) y 4 personas (90%, 88%, 87%, 43%) detectadas y ubicadas correctamente, idéntico al resultado local.",
   38
 );
 
